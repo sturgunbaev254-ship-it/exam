@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Студенты
+{% endblock %}
+
+{% block content %}
+
+<h1>Все студенты</h1>
+
+<div class="students">
+
+    {% for student in students %}
+
+        <div class="student-card">
+
+            {% if student.avatar %}
+                <img
+                    src="{{ student.avatar.url }}"
+                    alt="{{ student.name }}"
+                >
+            {% endif %}
+
+            <h2>{{ student.name }}</h2>
+
+            <p>Возраст: {{ student.age }}</p>
+
+            {% if student.group %}
+                <p>Группа: {{ student.group.name }}</p>
+            {% else %}
+                <p>Группа не указана</p>
+            {% endif %}
+
+            <a href="{% url 'student_detail' student.id %}">
+                Подробнее
+            </a>
+
+        </div>
+
+    {% empty %}
+
+        <p>Студентов пока нет.</p>
+
+    {% endfor %}
+
+</div>
+
+{% endblock %}

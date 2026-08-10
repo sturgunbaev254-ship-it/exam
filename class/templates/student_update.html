@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Изменить студента
+{% endblock %}
+
+{% block content %}
+
+<h1>Изменить студента</h1>
+
+<form method="POST" enctype="multipart/form-data">
+
+    {% csrf_token %}
+
+    <input
+        type="text"
+        name="name"
+        value="{{ student.name }}"
+        required
+    >
+
+    <input
+        type="number"
+        name="age"
+        value="{{ student.age }}"
+        required
+    >
+
+    <select name="group" required>
+
+        {% for group in groups %}
+
+            <option
+                value="{{ group.id }}"
+                {% if student.group == group.id %}
+                    selected
+                {% endif %}
+            >
+                {{ group.name }}
+            </option>
+
+        {% endfor %}
+
+    </select>
+
+    <input
+        type="file"
+        name="avatar"
+        accept="image/*"
+    >
+
+    <button type="submit">
+        Сохранить
+    </button>
+
+</form>
+
+{% endblock %}

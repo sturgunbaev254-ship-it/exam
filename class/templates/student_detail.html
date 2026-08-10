@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% block title %}
+{{ student.name }}
+{% endblock %}
+
+{% block content %}
+
+<h1>{{ student.name }}</h1>
+
+{% if student.avatar %}
+    <img
+        src="{{ student.avatar.url }}"
+        alt="{{ student.name }}"
+        class="avatar"
+    >
+{% endif %}
+
+<p>Возраст: {{ student.age }}</p>
+
+{% if student.group %}
+    <p>
+        Группа: {{ student.group.name }}
+    </p>
+{% endif %}
+
+<h2>Оценки</h2>
+
+{% for mark in student.marks.all %}
+
+    <div class="mark">
+        <strong>{{ mark.subject }}</strong>
+        — {{ mark.mark }}
+    </div>
+
+{% empty %}
+
+    <p>Оценок пока нет.</p>
+
+{% endfor %}
+
+<br>
+
+<a href="{% url 'student_update' student.id %}">
+    Изменить
+</a>
+
+<a href="{% url 'student_delete' student.id %}">
+    Удалить
+</a>
+
+{% endblock %}
