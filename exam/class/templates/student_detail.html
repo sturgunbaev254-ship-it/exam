@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ student.name }}{% endblock %}
+
+{% block content %}
+<div class="detail-card">
+    <div class="detail-top">
+        <div>
+            {% if student.avatar %}
+                <img src="{{ student.avatar.url }}" alt="{{ student.name }}" class="detail-avatar">
+            {% else %}
+                <div class="detail-avatar detail-avatar-placeholder">{{ student.name|first|upper }}</div>
+            {% endif %}
+        </div>
+
+        <div class="detail-info">
+            <span class="eyebrow">Студент</span>
+            <h1>{{ student.name }}</h1>
+            <p>Возраст: <strong>{{ student.age }}</strong></p>
+            <p>Группа: <strong>{{ student.group.name }}</strong></p>
+            {% if student.group.mentor %}
+                <p>Ментор группы: <strong>{{ student.group.mentor.name }}</strong></p>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="student-detail-actions">
+        <a href="{% url 'student_mark_create' student.id %}" class="detail-action detail-action-add">+ Добавить оценку</a>
+        <a href="{% url 'student_update' student.id %}" class="detail-action detail-action-edit">Изменить</a>
+        <a href="{% url 'student_delete' student.id %}" class="detail-action detail-action-delete">Удалить</a>
+    </div>
+</div>
+
+<div class="section-heading marks-heading">
+    <div>
+        <span class="eyebrow">Успеваемость</span>
+        <h2>Оценки</h2>
+    </div>
+    <a href="{% url 'student_mark_create' student.id %}" class="section-link">+ Добавить оценку</a>
+</div>
+
+<div class="marks-list">
+    {% for mark in marks %}
+        <article class="mark-card">
+            <div>
+                <h3>{{ mark.subject }}</h3>
+                <p>Учитель: {% if mark.teacher %}{{ mark.teacher.name }}{% else %}не указан{% endif %}</p>
+                <small>{{ mark.created_at|date:"d.m.Y" }}</small>
+            </div>
+            <div class="mark-side student-mark-side">
+                <div class="mark-number">{{ mark.mark }}</div>
+                <div class="student-mark-actions">
+                    <a href="{% url 'mark_update' mark.id %}" class="student-mark-edit">Изменить</a>
+                    <a href="{% url 'mark_delete' mark.id %}" class="student-mark-delete">Удалить</a>
+                </div>
+            </div>
+        </article>
+    {% empty %}
+        <div class="empty-state">
+            <h3>Оценок пока нет</h3>
+            <p>Добавьте первую оценку для этого студента.</p>
+            <a href="{% url 'student_mark_create' student.id %}" class="btn">Добавить оценку</a>
+        </div>
+    {% endfor %}
+</div>
+{% endblock %}

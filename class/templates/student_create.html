@@ -1,55 +1,39 @@
 {% extends 'base.html' %}
 
-{% block title %}
-Добавить студента
-{% endblock %}
+{% block title %}Добавить студента{% endblock %}
 
 {% block content %}
+<div class="page-heading">
+    <div>
+        <span class="eyebrow">StudentHub</span>
+        <h1>Добавить студента</h1>
+        <p>Заполните данные, чтобы добавить нового студента.</p>
+    </div>
+</div>
 
-<h1>Добавить студента</h1>
-
-<form method="POST" enctype="multipart/form-data">
-
+<form method="POST" enctype="multipart/form-data" class="form-card">
     {% csrf_token %}
 
-    <input
-        type="text"
-        name="name"
-        placeholder="Имя"
-    >
+    <label for="name">Имя</label>
+    <input id="name" type="text" name="name" placeholder="Имя студента" required>
 
-    <input
-        type="number"
-        name="age"
-        placeholder="Возраст"
-    >
+    <label for="age">Возраст</label>
+    <input id="age" type="number" name="age" placeholder="Возраст" required>
 
-    <select name="group" required>
-
-        <option value="">
-            Выберите группу
-        </option>
-
+    <label for="group">Группа</label>
+    <select id="group" name="group" required>
+        <option value="">Выберите группу</option>
         {% for group in groups %}
-
-            <option value="{{ group.id }}">
-                {{ group.name }}
-            </option>
-
+            <option value="{{ group.id }}">{{ group.name }}</option>
         {% endfor %}
-
     </select>
 
-    <input
-        type="file"
-        name="avatar"
-        accept="image/*"
-    >
+    <label for="avatar">Аватар</label>
+    <input id="avatar" type="file" name="avatar" accept="image/*">
 
-    <button type="submit">
-        Создать
-    </button>
-
+    <div class="form-actions">
+        <button type="submit" class="btn">Создать</button>
+        <a href="{% url 'student_list' %}" class="btn btn-light">Отмена</a>
+    </div>
 </form>
-
 {% endblock %}

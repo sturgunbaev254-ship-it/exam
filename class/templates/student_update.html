@@ -1,58 +1,44 @@
 {% extends 'base.html' %}
 
-{% block title %}
-Изменить студента
-{% endblock %}
+{% block title %}Изменить студента{% endblock %}
 
 {% block content %}
+<div class="page-heading">
+    <div>
+        <span class="eyebrow">StudentHub</span>
+        <h1>Изменить студента</h1>
+        <p>Обновите данные студента {{ student.name }}.</p>
+    </div>
+</div>
 
-<h1>Изменить студента</h1>
-
-<form method="POST" enctype="multipart/form-data">
-
+<form method="POST" enctype="multipart/form-data" class="form-card">
     {% csrf_token %}
 
-    <input
-        type="text"
-        name="name"
-        value="{{ student.name }}"
-        required
-    >
+    <label for="name">Имя</label>
+    <input id="name" type="text" name="name" value="{{ student.name }}" required>
 
-    <input
-        type="number"
-        name="age"
-        value="{{ student.age }}"
-        required
-    >
+    <label for="age">Возраст</label>
+    <input id="age" type="number" name="age" value="{{ student.age }}" required>
 
-    <select name="group" required>
-
+    <label for="group">Группа</label>
+    <select id="group" name="group" required>
         {% for group in groups %}
-
-            <option
-                value="{{ group.id }}"
-                {% if student.group == group.id %}
-                    selected
-                {% endif %}
-            >
+            <option value="{{ group.id }}" {% if student.group_id == group.id %}selected{% endif %}>
                 {{ group.name }}
             </option>
-
         {% endfor %}
-
     </select>
 
-    <input
-        type="file"
-        name="avatar"
-        accept="image/*"
-    >
+    {% if student.avatar %}
+        <img src="{{ student.avatar.url }}" alt="{{ student.name }}" class="student-avatar">
+    {% endif %}
 
-    <button type="submit">
-        Сохранить
-    </button>
+    <label for="avatar">Аватар</label>
+    <input id="avatar" type="file" name="avatar" accept="image/*">
 
+    <div class="form-actions">
+        <button type="submit" class="btn">Сохранить</button>
+        <a href="{% url 'student_detail' student.id %}" class="btn btn-light">Отмена</a>
+    </div>
 </form>
-
 {% endblock %}

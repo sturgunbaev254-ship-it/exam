@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ group.name }}{% endblock %}
+
+{% block content %}
+<div class="detail-card">
+    <div class="detail-top">
+        <div>
+            <div class="detail-avatar detail-avatar-placeholder">{{ group.name|first|upper }}</div>
+        </div>
+
+        <div class="detail-info">
+            <span class="eyebrow">Группа</span>
+            <h1>{{ group.name }}</h1>
+            {% if group.mentor %}
+                <p>Учитель: <strong>{{ group.mentor.name }}</strong></p>
+            {% else %}
+                <p>Учитель не назначен</p>
+            {% endif %}
+            <p>Создана: <strong>{{ group.created_at|date:"d.m.Y" }}</strong></p>
+        </div>
+    </div>
+</div>
+
+<div class="section-heading marks-heading">
+    <div>
+        <span class="eyebrow">Студенты</span>
+        <h2>Студенты группы</h2>
+    </div>
+</div>
+
+<div class="students">
+    {% for student in students %}
+        <article class="student-card">
+            {% if student.avatar %}
+                <img src="{{ student.avatar.url }}" alt="{{ student.name }}" class="student-avatar">
+            {% else %}
+                <div class="student-avatar student-avatar-placeholder">{{ student.name|first|upper }}</div>
+            {% endif %}
+
+            <div class="student-info">
+                <h3>{{ student.name }}</h3>
+                <p>Возраст: {{ student.age }}</p>
+            </div>
+
+            <div class="card-actions">
+                <a href="{% url 'student_detail' student.id %}" class="card-link">Подробнее</a>
+            </div>
+        </article>
+    {% empty %}
+        <div class="empty-state">
+            <h3>В группе пока нет студентов</h3>
+            <p>Добавьте студента и выберите эту группу.</p>
+            <a href="{% url 'student_create' %}" class="btn">Добавить студента</a>
+        </div>
+    {% endfor %}
+</div>
+{% endblock %}

@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block title %}Группы{% endblock %}
+
+{% block content %}
+<div class="page-heading">
+    <div>
+        <span class="eyebrow">StudentHub</span>
+        <h1>Группы</h1>
+        <p>Все группы и их менторы.</p>
+    </div>
+</div>
+
+<div class="students">
+    {% for group in groups %}
+        <article class="student-card">
+            <div class="student-avatar student-avatar-placeholder">{{ group.name|first|upper }}</div>
+
+            <div class="student-info">
+                <h3>{{ group.name }}</h3>
+                <p>{% if group.mentor %}Учитель: {{ group.mentor.name }}{% else %}Учитель не назначен{% endif %}</p>
+                <span class="group-badge">Студентов: {{ group.students.count }}</span>
+            </div>
+
+            <div class="card-actions">
+                <a href="{% url 'group_detail' group.id %}" class="card-link">Подробнее</a>
+            </div>
+        </article>
+    {% empty %}
+        <div class="empty-state">
+            <h3>Групп пока нет</h3>
+            <p>Группы добавляются через админ-панель.</p>
+        </div>
+    {% endfor %}
+</div>
+{% endblock %}

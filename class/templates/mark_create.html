@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block title %}Добавить оценку{% endblock %}
+
+{% block content %}
+<div class="page-heading">
+    <div>
+        <span class="eyebrow">Оценки</span>
+        <h1>Добавить оценку</h1>
+        <p>Выберите студента, предмет, учителя и оценку.</p>
+    </div>
+</div>
+
+<form method="POST" class="form-card">
+    {% csrf_token %}
+
+    <label for="student">Студент</label>
+    <select id="student" name="student" required>
+        <option value="">Выберите студента</option>
+        {% for student in students %}
+            <option value="{{ student.id }}"
+                {% if selected_student and selected_student.id == student.id %}selected{% endif %}>
+                {{ student.name }}{% if student.group %} — {{ student.group.name }}{% endif %}
+            </option>
+        {% endfor %}
+    </select>
+
+    <label for="subject">Предмет</label>
+    <input id="subject" type="text" name="subject" placeholder="Например: Python" required>
+
+    <label for="teacher">Учитель</label>
+    <select id="teacher" name="teacher" required>
+        <option value="">Выберите учителя</option>
+        {% for teacher in teachers %}
+            <option value="{{ teacher.id }}">{{ teacher.name }} — {{ teacher.get_direction_display }}</option>
+        {% endfor %}
+    </select>
+
+    <label for="mark">Оценка</label>
+    <input id="mark" type="number" name="mark" min="1" max="5" placeholder="1–5" required>
+
+    <div class="form-actions">
+        <button type="submit" class="btn">Добавить оценку</button>
+        {% if selected_student %}
+            <a href="{% url 'student_detail' selected_student.id %}" class="btn btn-light">Назад</a>
+        {% else %}
+            <a href="{% url 'mark_list' %}" class="btn btn-light">Назад</a>
+        {% endif %}
+    </div>
+</form>
+{% endblock %}
