@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ teacher.name }}{% endblock %}
+
+{% block content %}
+<div class="detail-card">
+    <div class="detail-top">
+        <div>
+            <div class="detail-avatar detail-avatar-placeholder">{{ teacher.name|first|upper }}</div>
+        </div>
+
+        <div class="detail-info">
+            <span class="eyebrow">Учитель</span>
+            <h1>{{ teacher.name }}</h1>
+            <p>Направление: <strong>{{ teacher.get_direction_display }}</strong></p>
+        </div>
+    </div>
+</div>
+
+<div class="section-heading marks-heading">
+    <div>
+        <span class="eyebrow">Группы</span>
+        <h2>Группы учителя</h2>
+    </div>
+</div>
+
+<div class="students">
+    {% for group in groups %}
+        <article class="student-card">
+            <div class="student-info">
+                <h3>{{ group.name }}</h3>
+                <span class="group-badge">Студентов: {{ group.students.count }}</span>
+            </div>
+
+            <div class="card-actions">
+                <a href="{% url 'group_detail' group.id %}" class="card-link">Открыть группу</a>
+            </div>
+        </article>
+    {% empty %}
+        <div class="empty-state">
+            <h3>У этого учителя пока нет групп</h3>
+            <p>Группы назначаются через админ-панель.</p>
+        </div>
+    {% endfor %}
+</div>
+{% endblock %}

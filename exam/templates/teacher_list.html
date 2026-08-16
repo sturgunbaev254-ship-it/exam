@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block title %}Учителя{% endblock %}
+
+{% block content %}
+<div class="page-heading">
+    <div>
+        <span class="eyebrow">StudentHub</span>
+        <h1>Учителя</h1>
+        <p>Все учителя и их направления.</p>
+    </div>
+</div>
+
+<div class="students">
+    {% for teacher in teachers %}
+        <article class="student-card">
+            <div class="student-avatar student-avatar-placeholder">{{ teacher.name|first|upper }}</div>
+
+            <div class="student-info">
+                <h3>{{ teacher.name }}</h3>
+                <span class="group-badge">{{ teacher.get_direction_display }}</span>
+            </div>
+
+            <div class="card-actions">
+                <a href="{% url 'teacher_detail' teacher.id %}" class="card-link">Подробнее</a>
+            </div>
+        </article>
+    {% empty %}
+        <div class="empty-state">
+            <h3>Учителей пока нет</h3>
+            <p>Учителя добавляются через админ-панель.</p>
+        </div>
+    {% endfor %}
+</div>
+{% endblock %}

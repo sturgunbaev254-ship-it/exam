@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block title %}Добавить студента{% endblock %}
+
+{% block content %}
+<div class="page-heading">
+    <div>
+        <span class="eyebrow">StudentHub</span>
+        <h1>Добавить студента</h1>
+        <p>Заполните данные, чтобы добавить нового студента.</p>
+    </div>
+</div>
+
+<form method="POST" enctype="multipart/form-data" class="form-card">
+    {% csrf_token %}
+
+    <label for="name">Имя</label>
+    <input id="name" type="text" name="name" placeholder="Имя студента" required>
+
+    <label for="age">Возраст</label>
+    <input id="age" type="number" name="age" placeholder="Возраст" required>
+
+    <label for="group">Группа</label>
+    <select id="group" name="group" required>
+        <option value="">Выберите группу</option>
+        {% for group in groups %}
+            <option value="{{ group.id }}">{{ group.name }}</option>
+        {% endfor %}
+    </select>
+
+    <label for="avatar">Аватар</label>
+    <input id="avatar" type="file" name="avatar" accept="image/*">
+
+    <div class="form-actions">
+        <button type="submit" class="btn">Создать</button>
+        <a href="{% url 'student_list' %}" class="btn btn-light">Отмена</a>
+    </div>
+</form>
+{% endblock %}

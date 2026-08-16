@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block title %}Оценки{% endblock %}
+
+{% block content %}
+<div class="page-heading">
+    <div>
+        <span class="eyebrow">Успеваемость</span>
+        <h1>Оценки студентов</h1>
+        <p>Все оценки, предметы и учителя в одном месте.</p>
+    </div>
+    <a href="{% url 'mark_create' %}" class="btn">Добавить оценку</a>
+</div>
+
+<div class="marks-list">
+    {% for mark in marks %}
+        <article class="mark-card">
+            <div class="mark-main">
+                <div class="mark-student">{{ mark.student.name }}</div>
+                <h3>{{ mark.subject }}</h3>
+                <p>Группа: {{ mark.student.group.name }}</p>
+                <p>Учитель: {% if mark.teacher %}{{ mark.teacher.name }}{% else %}не указан{% endif %}</p>
+                <small>{{ mark.created_at|date:"d.m.Y" }}</small>
+            </div>
+            <div class="mark-side">
+                <div class="mark-number">{{ mark.mark }}</div>
+                <div class="mark-actions">
+                    <a href="{% url 'mark_update' mark.id %}" class="card-link">Изменить</a>
+                    <a href="{% url 'mark_delete' mark.id %}" class="card-link danger-link">Удалить</a>
+                </div>
+            </div>
+        </article>
+    {% empty %}
+        <div class="empty-state">
+            <h3>Оценок пока нет</h3>
+            <p>Добавьте первую оценку для студента.</p>
+            <a href="{% url 'mark_create' %}" class="btn">Добавить оценку</a>
+        </div>
+    {% endfor %}
+</div>
+{% endblock %}

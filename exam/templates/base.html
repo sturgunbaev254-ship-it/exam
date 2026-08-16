@@ -1,0 +1,72 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>
+        {% block title %}StudentHub{% endblock %}
+    </title>
+
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+</head>
+
+<body>
+
+    <header>
+
+        <nav>
+
+            <a href="{% url 'home' %}" class="logo">
+                Курс
+            </a>
+
+            <div class="nav-links">
+
+                <a href="{% url 'home' %}">
+                    Главная
+                </a>
+
+                <a href="{% url 'teacher_list' %}">
+                    Учителя
+                </a>
+
+                <a href="{% url 'group_list' %}">
+                    Группы
+                </a>
+
+                <a href="{% url 'student_list' %}">
+                    Студенты
+                </a>
+
+                <a href="{% url 'mark_list' %}">
+                    Оценки
+                </a>
+
+                <a href="/admin/">
+                    Админка
+                </a>
+
+            </div>
+
+        </nav>
+
+    </header>
+
+
+    <main class="container">
+
+        {% block content %}
+        {% endblock %}
+
+    </main>
+
+</body>
+
+</html>

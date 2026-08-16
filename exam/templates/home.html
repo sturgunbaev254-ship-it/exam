@@ -1,0 +1,101 @@
+{% extends 'base.html' %}
+
+{% block title %}Главная — StudentHub{% endblock %}
+
+{% block content %}
+
+<section class="hero">
+    <div>
+        <span class="eyebrow">StudentHub</span>
+        <h1>Управление студентами<br>в одном месте</h1>
+        <p class="hero-text">
+            Следите за студентами, группами, учителями и оценками.
+        </p>
+
+        <div class="hero-actions">
+            <a href="{% url 'student_create' %}" class="btn">Добавить студента</a>
+            <a href="{% url 'student_list' %}" class="btn btn-light">Все студенты</a>
+        </div>
+    </div>
+</section>
+
+<section class="stats">
+    <div class="stat-card">
+        <span class="stat-icon">👨‍🎓</span>
+        <div>
+            <strong>{{ students_count }}</strong>
+            <span>Студентов</span>
+        </div>
+    </div>
+
+    <div class="stat-card">
+        <span class="stat-icon">👥</span>
+        <div>
+            <strong>{{ groups_count }}</strong>
+            <span>Групп</span>
+        </div>
+    </div>
+
+    <div class="stat-card">
+        <span class="stat-icon">👨‍🏫</span>
+        <div>
+            <strong>{{ teachers_count }}</strong>
+            <span>Учителей</span>
+        </div>
+    </div>
+
+    <div class="stat-card">
+        <span class="stat-icon">⭐</span>
+        <div>
+            <strong>{{ marks_count }}</strong>
+            <span>Оценок</span>
+        </div>
+    </div>
+</section>
+
+<section class="section-heading">
+    <div>
+        <span class="eyebrow">База студентов</span>
+        <h2>Студенты</h2>
+    </div>
+    <a href="{% url 'student_list' %}" class="section-link">Посмотреть всех</a>
+</section>
+
+<div class="students">
+    {% for student in students %}
+        <article class="student-card">
+            {% if student.avatar %}
+                <img src="{{ student.avatar.url }}" alt="{{ student.name }}" class="student-avatar">
+            {% else %}
+                <div class="student-avatar student-avatar-placeholder">
+                    {{ student.name|first|upper }}
+                </div>
+            {% endif %}
+
+            <div class="student-info">
+                <h3>{{ student.name }}</h3>
+                <p>Возраст: {{ student.age }}</p>
+
+                {% if student.group %}
+                    <span class="group-badge">{{ student.group.name }}</span>
+                {% else %}
+                    <span class="group-badge">Группа не указана</span>
+                {% endif %}
+            </div>
+
+            <div class="card-actions">
+                <a href="{% url 'student_detail' student.id %}" class="card-link">Подробнее</a>
+                <a href="{% url 'student_mark_create' student.id %}" class="card-link add-mark-link">Оценка</a>
+            </div>
+        </article>
+    {% empty %}
+        <div class="empty-state">
+            <div class="empty-icon">👨‍🎓</div>
+            <h3>Студентов пока нет</h3>
+            <p>Добавьте первого студента, чтобы он появился здесь.</p>
+            <a href="{% url 'student_create' %}" class="btn">Добавить студента</a>
+        </div>
+    {% endfor %}
+</div>
+
+{% endblock %}
