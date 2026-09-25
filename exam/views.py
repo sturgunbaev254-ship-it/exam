@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Teacher, Group, Student, StudentMark
-from django.contrib import messages
+from django.contrib import messages  
 
 
 def home(request):
@@ -65,6 +65,7 @@ def student_create(request):
                 group_id=group_id,
                 avatar=avatar
             )
+            messages.success(request,f"Студент {student.name} успешно создан!!!")
             return redirect('student_detail', pk=student.id)
 
     return render(request, 'student_create.html', {'groups': groups})
@@ -84,6 +85,7 @@ def student_update(request, pk):
             student.avatar = avatar
 
         student.save()
+        messages.success(request,f"Студент {student.name} успешно измемён!!!")
         return redirect('student_detail', pk=student.id)
 
     return render(request, 'student_update.html', {'student': student, 'groups': groups})
@@ -94,6 +96,7 @@ def student_delete(request, pk):
 
     if request.method == 'POST':
         student.delete()
+        messages.success(request,f"Студент {student.name} успешно удалить!!!" )
         return redirect('student_list')
 
     return render(request, 'student_delete.html', {'student': student})

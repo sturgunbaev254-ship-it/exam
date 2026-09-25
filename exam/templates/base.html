@@ -59,8 +59,14 @@
 
     </header>
 
-
     <main class="container">
+        {% if messages %}
+{% for message in messages %}
+<div class="message">
+    {{ message }}
+</div>
+{% endfor %}
+{% endif %}
 
         {% block content %}
         {% endblock %}

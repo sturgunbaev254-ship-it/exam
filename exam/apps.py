@@ -7,3 +7,4 @@ class ExamConfig(AppConfig):
 
     def ready(self):
         import exam.signals
+    
